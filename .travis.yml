@@ -6,7 +6,7 @@ services:
 install:
   - bundle install
 
-  before_install:
+before_install:
   - docker build -t "$DOCKER_ID"/react-complex-test:ravis-$TRAVIS_BUILD_NUMBER -f ./client/Dockerfile.dev ./client 
 
 script:
