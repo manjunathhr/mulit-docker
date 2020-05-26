@@ -1,0 +1,27 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t react-complex-test -f ./client/Dockerfile.dev ./client 
+
+script:
+  - docker run -e CI=true react-complex-test npm run test -- --coverage
+
+after_success:
+  - docker build -t multi-client ./client
+  - docker build -t multi-nginx  ./nginx
+  - docker build -t multi-server ./server
+  - docker build -t multi-worker ./worker
+# docker build -t manjunathhr/multi-client ./client 
+
+# docker login on CMD line
+# -echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+# passwork can store in travel ENV, 
+# Take those images and push to docker hub
+
+# docker push manjunathhr/multi-client 
+# docker push manjunathhr/multi-nginx 
+# docker push manjunathhr/multi-server 
+# docker push manjunathhr/multi-worker
+
