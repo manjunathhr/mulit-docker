@@ -1,25 +1,31 @@
+language: generic
+
 sudo: required
+
 services:
   - docker
 
-before_install:
-  - docker build -t manjunathhr/react-complex-test -f ./client/Dockerfile.dev ./client 
+install:
+  - bundle install
+
+  before_install:
+  - docker build -t "$DOCKER_ID"/react-complex-test:ravis-$TRAVIS_BUILD_NUMBER -f ./client/Dockerfile.dev ./client 
 
 script:
-  - docker run  manjunathhr/react-complex-test npm run test -- --coverage
+  - docker run  "$DOCKER_ID"/react-complex-test npm run test -- --coverage
 
 after_success:
-  - docker build -t manjunathhr/multi-client ./client
-  - docker build -t manjunathhr/multi-nginx  ./nginx
-  - docker build -t manjunathhr/multi-server ./server
-  - docker build -t manjunathhr/multi-worker ./worker
+  - docker build -t "$DOCKER_ID"/multi-client:travis-$TRAVIS_BUILD_NUMBER ./client
+  - docker build -t "$DOCKER_ID"/multi-nginx:travis-$TRAVIS_BUILD_NUMBER ./nginx
+  - docker build -t "$DOCKER_ID"/multi-server:travis-$TRAVIS_BUILD_NUMBER ./server
+  - docker build -t "$DOCKER_ID"/multi-worker:travis-$TRAVIS_BUILD_NUMBER ./worker
   - docker ps -a 
   - docker images "DOCKER_ID"/
   - echo "$DOCKER_ID" 
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin docker.io
-  - docker push manjunathhr/multi-client 
-  - docker push manjunathhr/multi-nginx 
-  - docker push manjunathhr/multi-server 
-  - docker push manjunathhr/multi-worker
+  - docker push "$DOCKER_ID"/multi-client 
+  - docker push "$DOCKER_ID"/multi-nginx 
+  - docker push "$DOCKER_ID"/multi-server 
+  - docker push "$DOCKER_ID"/multi-worker
 
  
