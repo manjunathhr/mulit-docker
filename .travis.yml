@@ -4,16 +4,16 @@ services:
   - docker
 
 before_install:
-  - docker build -t "$DOCKER_ID"/react-complex-test:ravis-$TRAVIS_BUILD_NUMBER -f ./client/Dockerfile.dev ./client 
+  - docker build -t "$DOCKER_ID"/react-complex-test -f ./client/Dockerfile.dev ./client 
 
 script:
   - docker run  "$DOCKER_ID"/react-complex-test npm run test -- --coverage
 
 after_success:
-  - docker build -t "$DOCKER_ID"/multi-client:travis-$TRAVIS_BUILD_NUMBER ./client
-  - docker build -t "$DOCKER_ID"/multi-nginx:travis-$TRAVIS_BUILD_NUMBER ./nginx
-  - docker build -t "$DOCKER_ID"/multi-server:travis-$TRAVIS_BUILD_NUMBER ./server
-  - docker build -t "$DOCKER_ID"/multi-worker:travis-$TRAVIS_BUILD_NUMBER ./worker
+  - docker build -t "$DOCKER_ID"/multi-client ./client
+  - docker build -t "$DOCKER_ID"/multi-nginx  ./nginx
+  - docker build -t "$DOCKER_ID"/multi-server ./server
+  - docker build -t "$DOCKER_ID"/multi-worker ./worker
   - docker ps -a 
   - docker images "DOCKER_ID"/
   - echo "$DOCKER_ID" 
