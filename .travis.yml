@@ -13,13 +13,13 @@ after_success:
   - docker build -t manjunathhr/multi-nginx  ./nginx
   - docker build -t manjunathhr/multi-server ./server
   - docker build -t manjunathhr/multi-worker ./worker
-  # docker login on CMD line
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  # passwork can store in travel ENV, 
-  # Take those images and push to docker hub
-
+  - docker ps -a 
+  - docker images "DOCKER_ID"/
+  - echo "$DOCKER_ID" 
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin docker.io
   - docker push manjunathhr/multi-client 
   - docker push manjunathhr/multi-nginx 
   - docker push manjunathhr/multi-server 
   - docker push manjunathhr/multi-worker
 
+ 
